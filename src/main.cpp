@@ -300,6 +300,29 @@ Response WebServer::handleRequest(Client* client) {
     std::cout << YELLOW << req.getMethod() << " " << req.getURI() 
               << " " << req.getVersion() << RESET << std::endl;
     
+    // Validate request - check for malformed or invalid method
+    if (req.getMethod() == "INVALID") {
+        response.setStatusCode(400);  // Bad Request
+        response.setHeader("Connection", "close");
+        return response;
+    }
+    
+    // Check for missing Host header in HTTP/1.1
+    if (req.getMethod() == "BADHOST") {
+        response.setStatusCode(400);  // Bad Request - missing Host
+        response.setHeader("Connection", "close");
+        return response;
+    }
+    
+    // Check for POST without Content-Length
+    if (req.getMethod() == "POST" && 
+        req.getHeader("Content-Length").empty() && 
+        req.getHeader("Transfer-Encoding").empty()) {
+        response.setStatusCode(411);  // Length Required
+        response.setHeader("Connection", "close");
+        return response;
+    }
+    
     // Set Connection header based on request
     std::string connectionHeader = req.getHeader("Connection");
     if (connectionHeader == "keep-alive") {

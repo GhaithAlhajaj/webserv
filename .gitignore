@@ -1,0 +1,67 @@
+# Compiled executable
+webserv
+
+# Object files
+*.o
+obj/
+*.obj
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.DS_Store
+
+# Upload directory contents (keep directory structure)
+www/uploads/*
+!www/uploads/.gitkeep
+
+# Test files
+*.bin
+big*.bin
+2mb.bin
+1gb.bin
+test_*.txt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+.clang-format
+.clangd/
+
+# Logs
+*.log
+error.log
+access.log
+
+# Core dumps
+core
+core.*
+
+# Valgrind output
+valgrind-out.txt
+*.valgrind
+
+# Build artifacts
+*.a
+*.so
+*.dylib
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini

@@ -8,6 +8,13 @@ Request::~Request() {}
 void Request::parseRequestLine(const std::string& line) {
     std::istringstream iss(line);
     iss >> _method >> _uri >> _version;
+    
+    // Check if parsing was successful
+    if (_method.empty() || _uri.empty() || _version.empty()) {
+        _method = "INVALID";
+        return;
+    }
+    
     parseURI();
 }
 
@@ -92,6 +99,14 @@ bool Request::parse(const std::string& data) {
         }
         
         _headersComplete = true;
+        
+        // HTTP/1.1 requires Host header
+        if (_version == "HTTP/1.1") {
+            std::string host = getHeader("Host");
+            if (host.empty()) {
+                _method = "BADHOST";  // Mark as invalid - missing Host header
+            }
+        }
         
         // Check for Content-Length
         std::string contentLengthStr = getHeader("Content-Length");
